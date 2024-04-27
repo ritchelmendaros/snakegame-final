@@ -283,7 +283,6 @@ class SnakeGameBoard extends React.Component {
   }
 
   moveHeadLeft() {
-    let width = this.state.width;
     let blockWidth = this.state.blockWidth;
     let snake = this.state.snake;
     // Calculate the new X position for the snake's head
@@ -299,7 +298,6 @@ class SnakeGameBoard extends React.Component {
   }
 
   moveHeadUp() {
-    let height = this.state.height;
     let blockHeight = this.state.blockHeight;
     let snake = this.state.snake;
     // Calculate the new Y position for the snake's head

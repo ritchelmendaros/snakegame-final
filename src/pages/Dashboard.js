@@ -1,9 +1,15 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import '../css/Dashboard.css'; // Import the CSS file
-import SnakeGameBoard from './SnakeGameBoard';
+import React from "react";
+import "../css/Dashboard.css"; // Import the CSS file
+import SnakeGameBoard from "./SnakeGameBoard";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
+  const navigate = useNavigate();
+
+  const handleCustomizeClick = () => {
+    navigate("/customize");
+  };
+
   return (
     <div className="dashboard-container">
       <div className="header">
@@ -14,7 +20,9 @@ const Dashboard = () => {
       </div>
       <div className="button-container">
         <div className="button-row">
-          <Link className="change-button">Customize Snake</Link>
+          <button className="change-button" onClick={handleCustomizeClick}>
+            Customize Snake
+          </button>
         </div>
       </div>
     </div>

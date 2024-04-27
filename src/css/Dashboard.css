@@ -43,7 +43,7 @@ html {
   }
   
   .change-button {
-    margin: 0 0.5rem; /* Add some margin between buttons */
+    margin: 0 0.5rem; 
     padding: 0.5rem 1rem;
     font-size: 16px;
     font-weight: bold;
@@ -52,6 +52,7 @@ html {
     background-color: #bb271a;
     font-family: 'Garet', sans-serif;
     border-radius: 5px;
+    letter-spacing: 2px;
     transition: all 0.3s ease;
   }
   
