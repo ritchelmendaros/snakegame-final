@@ -1,0 +1,96 @@
+.signup-container {
+  background-color: #09522F;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+}
+
+.image-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+
+.snake-image {
+  width: 400px;
+  height: auto;
+}
+
+.snake-word {
+  width: 300px;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.app-name {
+  font-size: 24px;
+}
+
+
+.signup-form {
+  background-color: #EFEFEF;
+  padding: 40px;
+  border-radius: 10px;
+  max-width: 400px;
+  margin-left: 100px;
+  width: 100%;
+  height: auto;
+  font-family: 'Garet', sans-serif; /* Changed font to Garet */
+}
+
+.signup-form div {
+  margin-bottom: 10px;
+}
+
+.signup-form input[type="text"],
+.signup-form input[type="email"],
+.signup-form input[type="password"] {
+  width: calc(95% - 20px);
+  padding: 10px;
+  font-size: 15px;
+  margin-bottom: 10px;
+  border: 2px solid black;
+  border-radius: 10px;
+  font-family: 'Garet', sans-serif; 
+  letter-spacing: 0.5;
+}
+
+.signup-form button {
+  width: calc(101% - 20px);
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  font-family: 'Garet', sans-serif; 
+  font-size: 16px;
+  font-weight: bold;
+  background-color: black;
+  color: #fff;
+  cursor: pointer;
+  margin-top: 10px; 
+  letter-spacing: 1px;
+}
+
+.signupname {
+  font-family: 'Garet', sans-serif; 
+  font-weight: bold;
+  font-size: 23px;
+  letter-spacing: 2px;
+  text-align: center; 
+  margin-top: 10px; 
+}
+
+.signup-form button:hover {
+  background-color: gray;
+  color: black;
+}
+
+.login-text {
+  font-family: 'Garet', sans-serif; 
+  font-weight: bold;
+  font-size: 15px;
+  padding-right: 20px;
+  text-align: right;
+}
