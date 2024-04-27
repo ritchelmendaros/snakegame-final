@@ -1,0 +1,71 @@
+.customize-snake-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    color: white;
+    background-color: black;
+  }
+  
+  .header {
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  .logo {
+    width: 60px;
+    height: auto;
+    padding-left: 20px;
+    padding-top: 20px;
+  }
+  
+  .content-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+    padding: 50px;
+  }
+  
+  .color-box {
+    margin: 0 20px; /* Adjust the margin here */
+    padding: 20px;
+  }
+  
+  .color-palette {
+    border: 1px solid #ffffff;
+    border-radius: 5px;
+    padding: 10px;
+  }
+  
+  .button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+    padding: 20px;
+  }
+  
+  .button-row {
+    display: flex;
+  }
+  
+  .change-button {
+    margin: 0 0.5rem; 
+    padding: 0.5rem 1rem;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #ffffff;
+    background-color: #bb271a;
+    font-family: 'Garet', sans-serif;
+    border-radius: 5px;
+    letter-spacing: 2px;
+    transition: all 0.3s ease;
+  }
+  
+  .change-button:hover {
+    background-color: #991f15;
+  }
+  
