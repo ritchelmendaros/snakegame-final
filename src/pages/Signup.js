@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import '../css/Signup.css'; 
 import { useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 function Signup() {
   const navigate = useNavigate();
@@ -14,22 +15,42 @@ function Signup() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    console.log("Name:", name);
+    console.log("Value:", value);
     setFormData(prevState => ({
       ...prevState,
       [name]: value
     }));
   };
+  
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(formData);
-    setFormData({
-      firstName: '',
-      lastName: '',
-      username: '',
-      password: ''
-    });
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const registerResponse = await axios.post(
+        "http://localhost:8080/users/register",
+        {
+          firstname: formData.firstName,
+          lastname: formData.lastName,
+          username: formData.username,
+          password: formData.password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+  
+      console.log("User registered successfully:", registerResponse.data);
+      alert("User registered successfully!");
+      navigate("/");
+    } catch (error) {
+      console.error("Error registering user:", error);
+      alert("Error registering user: " + error.message);
+    }
   };
+  
 
   const handleLoginClick = () => {
     navigate('/');

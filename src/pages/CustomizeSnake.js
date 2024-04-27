@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import '../css/CustomizeSnake.css'; // Import the CSS file
+import '../css/CustomizeSnake.css'; 
 
 const CustomizeSnake = () => {
-  const [snakeColor, setSnakeColor] = useState('#0000FF'); // Default snake color
-  const [foodColor, setFoodColor] = useState('#FF0000'); // Default food color
+  const [snakeColor, setSnakeColor] = useState('#0000FF'); 
+  const [foodColor, setFoodColor] = useState('#FF0000'); 
 
   const handleSnakeColorChange = (color) => {
     setSnakeColor(color);
@@ -15,7 +15,7 @@ const CustomizeSnake = () => {
   };
 
   const handleDoneButtonClick = () => {
-    // Logic for handling the done button click
+    
   };
 
   return (
