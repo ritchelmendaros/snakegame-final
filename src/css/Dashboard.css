@@ -15,13 +15,13 @@ html {
 .header {
   justify-content: space-between;
   width: 100%;
-  padding: 1rem;
 }
 
 .logo {
-  width: 200px;
+  width: 60px;
   height: auto;
-  padding: 10px;
+  padding-left: 20px;
+  padding-top: 20px;
 }
 
 .title {
@@ -32,22 +32,30 @@ html {
 }
 
 .button-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.play-button {
-  margin: 0.5rem;
-  padding: 0.5rem 1rem;
-  font-size: 1.2rem;
-  text-decoration: none;
-  color: #ffffff;
-  background-color: #bb271a;
-  border-radius: 5px;
-  transition: all 0.3s ease;
-}
-
-.play-button:hover {
-  background-color: #991f15;
-}
+    display: flex;
+    justify-content: center; /* Center the button row horizontally */
+    align-items: center;
+    margin-top: 1rem; /* Add some top margin */
+  }
+  
+  .button-row {
+    display: flex;
+  }
+  
+  .change-button {
+    margin: 0 0.5rem; /* Add some margin between buttons */
+    padding: 0.5rem 1rem;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #ffffff;
+    background-color: #bb271a;
+    font-family: 'Garet', sans-serif;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+  }
+  
+  .change-button:hover {
+    background-color: #991f15;
+  }
+  

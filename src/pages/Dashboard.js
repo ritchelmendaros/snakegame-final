@@ -7,14 +7,16 @@ const Dashboard = () => {
   return (
     <div className="dashboard-container">
       <div className="header">
-        <img src="logo1.png" alt="Logo" className="logo" />
+        <img src="logo.png" alt="Logo" className="logo" />
       </div>
       <div className="game-board-container">
         <SnakeGameBoard />
       </div>
-      {/* <div className="button-container">
-        <Link className="play-button" to="/play">Play Game</Link>
-      </div> */}
+      <div className="button-container">
+        <div className="button-row">
+          <Link className="change-button">Customize Snake</Link>
+        </div>
+      </div>
     </div>
   );
 };

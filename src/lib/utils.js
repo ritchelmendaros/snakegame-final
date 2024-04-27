@@ -19,6 +19,7 @@ function GameOver(props) {
         style={{
           width: props.width,
           height: props.height,
+          borderRadius: '5px',
           borderWidth: props.width / 50,
         }}
       >

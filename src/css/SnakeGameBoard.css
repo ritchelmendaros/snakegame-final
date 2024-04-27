@@ -1,14 +1,34 @@
 #GameBoard {
   position: relative;
   margin: auto;
-  background-color: #588B34; 
+  background-color: gainsboro;
+  border-radius: 5px;
+  overflow: hidden;
 }
 
 .Block {
   position: absolute;
   width: calc(100% / 30);
-  height: calc(100% / 20); 
+  height: calc(100% / 20);
 }
+
+#GameBoard:before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  border: 1px solid rgba(255, 255, 255, 0.3); 
+}
+
+#GameBoard:after {
+  content: "";
+  position: absolute;
+  width: calc(100% / 30);
+  height: calc(100% / 20);
+  background: rgba(255, 255, 255, 0.1);
+}
+
 
 .Block:before {
   content: "";
@@ -33,10 +53,11 @@
   transform: translate(-50%, -50%);
   text-align: center;
   font-size: 24px;
+  letter-spacing: 2px;
 }
 
 #GameOverText {
-  color: #820000;
+  color: red;
   font-weight: bold;
   font-family: 'Garet', sans-serif; 
   font-size: 40px;
@@ -45,7 +66,7 @@
 
 #PressSpaceText {
   margin-top: 50px;
-  color: #084074; 
+  color: blue; 
   font-weight: bold;
   font-size: 15px;
   letter-spacing: 2px;
@@ -59,6 +80,7 @@
   justify-content: center; 
   align-items: center; 
   text-align: center; 
+  letter-spacing: 2px;
 }
 
 .score {
