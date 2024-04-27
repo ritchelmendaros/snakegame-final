@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import './css/Signup.css'; 
+import { useNavigate } from "react-router-dom";
 
 function Signup() {
+  const navigate = useNavigate();
+  
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -26,6 +29,10 @@ function Signup() {
       username: '',
       password: ''
     });
+  };
+
+  const handleLoginClick = () => {
+    navigate('/');
   };
 
   return (
@@ -85,7 +92,11 @@ function Signup() {
               required
             />
           </div>
-          <p className="login-text">Have an account? <span style={{ textDecoration: 'underline' }}>Login</span></p>
+          <p className="login-text">Have an account? 
+            <span style={{ textDecoration: 'underline', cursor: 'pointer' }} onClick={handleLoginClick}>
+              Login
+            </span>
+          </p>
           <button type="submit">SIGN UP</button>
         </form>
       </div>

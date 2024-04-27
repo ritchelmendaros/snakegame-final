@@ -15,12 +15,13 @@
 }
 
 .snake-image {
-  width: 400px;
+  margin-top: 20px;
+  width: 300px;
   height: auto;
 }
 
 .snake-word {
-  width: 300px;
+  width: 350px;
   height: auto;
   margin-bottom: 10px;
 }
@@ -93,4 +94,5 @@
   font-size: 15px;
   padding-right: 20px;
   text-align: right;
+  letter-spacing: 1px;
 }
