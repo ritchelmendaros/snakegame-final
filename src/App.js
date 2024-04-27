@@ -21,8 +21,7 @@
 
 // export default App;
 import React from 'react';
-import { createRoot } from 'react-dom/client';
-import Dashboard from './pages/Dashboard';
+import SnakeGameBoard from './pages/SnakeGameBoard';
 
 function App() {
   // Use either ReactDOM.render() or ReactDOM.createRoot(), not both
@@ -30,7 +29,7 @@ function App() {
   // Make sure to replace 'root' with the ID of your container element
   return (
     <React.StrictMode>
-      <Dashboard />
+      <SnakeGameBoard />
     </React.StrictMode>
   );
 }

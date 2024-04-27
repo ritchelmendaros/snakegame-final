@@ -1,8 +1,8 @@
 import React from 'react'
-import '../css/Dashboard.css'
+import '../css/SnakeGameBoard.css'
 import GameOver from '../lib/utils.js'
 
-class Dashboard extends React.Component {
+class SnakeGameBoard extends React.Component {
     constructor(props) {
         super(props)
       
@@ -21,7 +21,7 @@ class Dashboard extends React.Component {
           direction: 'right',
           directionChanged: false,
           isGameOver: false,
-          snakeColor: 'lightgreen',
+          snakeColor: 'blue',
           appleColor: 'red',
           score: 0,
           highScore: Number(localStorage.getItem('snakeHighScore')) || 0,
@@ -438,13 +438,9 @@ class Dashboard extends React.Component {
             background: this.state.appleColor,
           }}
         />
-        <div id='Score' style={{ fontSize: this.state.width / 20 }}>
-          HIGH-SCORE: {this.state.highScore}&ensp;&ensp;&ensp;&ensp;SCORE:{' '}
-          {this.state.score}
-        </div>
       </div>
     )
   }
 }
 
-export default Dashboard
+export default SnakeGameBoard

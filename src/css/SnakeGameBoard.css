@@ -1,0 +1,53 @@
+#GameBoard {
+  position: relative;
+  margin: auto;
+  background-color: #C1FF72; 
+}
+
+.Block {
+  position: absolute;
+  width: calc(100% / 30);
+  height: calc(100% / 20); 
+}
+
+.Block:before {
+  content: "";
+  position: absolute;
+  width: calc(100% - 2px);
+  height: calc(100% - 2px);
+}
+
+#Score {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 15px;
+  font-weight: bold;
+  color: #EFEFEF;
+}
+
+#GameOver {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-size: 24px;
+}
+
+#GameOverText {
+  color: #820000;
+  font-weight: bold;
+  font-family: 'Garet', sans-serif; 
+  font-size: 40px;
+  letter-spacing: 2px;
+}
+
+#PressSpaceText {
+  margin-top: 50px;
+  color: #084074; 
+  font-weight: bold;
+  font-size: 15px;
+  letter-spacing: 2px;
+}
+

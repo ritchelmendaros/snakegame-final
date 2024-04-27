@@ -1,5 +1,5 @@
 .signup-container {
-  background-color: #09522F;
+  background-color: black;
   min-height: 100vh;
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -39,7 +39,7 @@
   margin-left: 100px;
   width: 100%;
   height: auto;
-  font-family: 'Garet', sans-serif; /* Changed font to Garet */
+  font-family: 'Garet', sans-serif; 
 }
 
 .signup-form div {
