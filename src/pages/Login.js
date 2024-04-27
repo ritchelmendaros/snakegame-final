@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import "../css/Signup.css";
 import { useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 function Login() {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
     username: "",
     password: "",
   });
@@ -20,15 +19,29 @@ function Login() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
-    setFormData({
-      firstName: "",
-      lastName: "",
-      username: "",
-      password: "",
-    });
+    try {
+      const loginResponse = await axios.post(
+        "http://localhost:8080/users/login",
+        {
+          username: formData.username,
+          password: formData.password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+  
+      console.log("Login successful:", loginResponse.data);
+      alert("Login successful!");
+      navigate("/");
+    } catch (error) {
+      console.error("Error logging in:", error);
+      alert("Login unsuccessful!");
+    }
   };
 
   const handleSignUpClick = () => {
