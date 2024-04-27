@@ -4,7 +4,8 @@
     align-items: center;
     justify-content: center;
     height: 100vh;
-    background-color: #f0f0f0;
+    color: white;
+    background-color: black;
   }
   
   .header {
@@ -21,7 +22,7 @@
   }
   
   .title {
-    color: #39423C;
+    color: white;
     text-align: center;
     font-size: 2rem;
     margin-bottom: 2rem;
