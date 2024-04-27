@@ -23,7 +23,7 @@
 .snake-word {
   width: 350px;
   height: auto;
-  margin-left: 200px;
+  margin-left: -70px;
   margin-bottom: 10px;
 }
 
@@ -85,7 +85,7 @@
 }
 
 .signup-form button:hover {
-  background-color: #BB271A;
+  background-color: #FC332E;
   color: black;
 }
 

@@ -12,9 +12,9 @@ const Dashboard = () => {
       <div className="game-board-container">
         <SnakeGameBoard />
       </div>
-      <div className="button-container">
+      {/* <div className="button-container">
         <Link className="play-button" to="/play">Play Game</Link>
-      </div>
+      </div> */}
     </div>
   );
 };
