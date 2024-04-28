@@ -45,7 +45,7 @@ class SnakeGameBoard extends React.Component {
   
     // Fetch the highest score from the API
     axios
-      .get(`/scoreboard/getHighScore?userId=${this.state.userId}`)
+      .get(`http://localhost:8080/scoreboard/getHighScore?userId=${this.props.userId}`)
       .then((response) => {
         const highScore = response.data;
         // Update the highScore state
@@ -55,7 +55,7 @@ class SnakeGameBoard extends React.Component {
         console.error("Error retrieving high score:", error);
         // Handle error if needed
       });
-  }
+    }  
   
 
   initGame() {
@@ -184,7 +184,7 @@ class SnakeGameBoard extends React.Component {
   
     // Use this.props.userId to access the userId from props
     axios
-    .post("/scoreboard/addScore", {
+    .post(`http://localhost:8080/scoreboard/addScore`, {
       userId: this.props.userId, // Use userId from props
       score: this.state.score,
     })
@@ -194,7 +194,7 @@ class SnakeGameBoard extends React.Component {
       
       // Fetch the highest score from the API
       axios
-        .get(`/scoreboard/getHighScore?userId=${this.props.userId}`) // Use userId from props
+        .get(`http://localhost:8080/scoreboard/getHighScore?userId=${this.props.userId}`) 
         .then((response) => {
           const highScore = response.data;
           // Update the highScore state
