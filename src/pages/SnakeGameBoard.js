@@ -23,10 +23,10 @@ class SnakeGameBoard extends React.Component {
       direction: "right",
       directionChanged: false,
       isGameOver: false,
-      snakeColor: "blue",
-      appleColor: "red",
+      snakeColor: "",
+      appleColor: "",
       score: 0,
-      userId: this.props.userId, 
+      userId: this.props.userId,
       highScore: Number(localStorage.getItem("snakeHighScore")) || 0,
       newHighScore: false,
     };
@@ -39,23 +39,49 @@ class SnakeGameBoard extends React.Component {
       this.gameLoop();
     } catch (error) {
       console.error("An error occurred in the game loop:", error);
-      // Handle the error gracefully, e.g., set isGameOver to true
       this.setState({ isGameOver: true });
     }
-  
+
+    // Fetch snake color
+    axios
+      .get(`http://localhost:8080/snake/getSnakeColor?userid=${this.props.userId}`)
+      .then((response) => {
+        const snakeColor = response.data;
+        this.setState({ snakeColor });
+      })
+      .catch((error) => {
+        console.error("Error fetching snake color:", error);
+      });
+
+    // Fetch food color
+    axios
+      .get(`http://localhost:8080/food/getFoodColor?userid=${this.props.userId}`)
+      .then((response) => {
+        const appleColor = response.data;
+        this.setState({ appleColor });
+      })
+      .catch((error) => {
+        console.error("Error fetching food color:", error);
+      });
+
     // Fetch the highest score from the API
     axios
-      .get(`http://localhost:8080/scoreboard/getHighScore?userId=${this.props.userId}`)
+      .get(
+        `http://localhost:8080/scoreboard/getHighScore?userId=${this.props.userId}`
+      )
       .then((response) => {
         const highScore = response.data;
-        // Update the highScore state
         this.setState({ highScore });
       })
       .catch((error) => {
         console.error("Error retrieving high score:", error);
-        // Handle error if needed
       });
-    }  
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.state.timeoutId);
+    window.removeEventListener("keydown", this.handleKeyDown);
+  } 
   
 
   initGame() {
@@ -133,88 +159,112 @@ class SnakeGameBoard extends React.Component {
   }
 
   resetGame() {
-  let width = this.state.width;
-  let height = this.state.height;
-  let blockWidth = this.state.blockWidth;
-  let blockHeight = this.state.blockHeight;
-  let apple = this.state.apple;
+    let width = this.state.width;
+    let height = this.state.height;
+    let blockWidth = this.state.blockWidth;
+    let blockHeight = this.state.blockHeight;
+    let apple = this.state.apple;
 
-  // snake reset
-  let snake = [];
-  let Xpos = width / 2;
-  let Ypos = height / 2;
-  let snakeHead = { Xpos: width / 2, Ypos: height / 2 };
-  snake.push(snakeHead);
-  for (let i = 1; i < this.state.startSnakeSize; i++) {
+    // snake reset
+    let snake = [];
+    let Xpos = width / 2;
+    let Ypos = height / 2;
+    let snakeHead = { Xpos: width / 2, Ypos: height / 2 };
+    snake.push(snakeHead);
+    for (let i = 1; i < this.state.startSnakeSize; i++) {
       Xpos -= blockWidth;
       let snakePart = { Xpos: Xpos, Ypos: Ypos };
       snake.push(snakePart);
-  }
+    }
 
-  // apple position reset
-  apple.Xpos =
+    // apple position reset
+    apple.Xpos =
       Math.floor(Math.random() * ((width - blockWidth) / blockWidth + 1)) *
       blockWidth;
-  apple.Ypos =
+    apple.Ypos =
       Math.floor(Math.random() * ((height - blockHeight) / blockHeight + 1)) *
       blockHeight;
-  while (this.isAppleOnSnake(apple.Xpos, apple.Ypos)) {
+    while (this.isAppleOnSnake(apple.Xpos, apple.Ypos)) {
       apple.Xpos =
-          Math.floor(Math.random() * ((width - blockWidth) / blockWidth + 1)) *
-          blockWidth;
+        Math.floor(Math.random() * ((width - blockWidth) / blockWidth + 1)) *
+        blockWidth;
       apple.Ypos =
-          Math.floor(
-              Math.random() * ((height - blockHeight) / blockHeight + 1)
-          ) * blockHeight;
-  }
+        Math.floor(
+          Math.random() * ((height - blockHeight) / blockHeight + 1)
+        ) * blockHeight;
+    }
 
-  // Reset the game state and then add the score
-  this.setState(
+    // Reset the game state and then add the score
+    this.setState(
       {
-          snake,
-          apple,
-          direction: "right",
-          directionChanged: false,
-          isGameOver: false,
-          gameLoopTimeout: 50,
-          // Retain the snake color state
-          snakeColor: this.state.snakeColor,
-          appleColor: "red",
-          score: 0,
-          newHighScore: false,
-          userId: this.props.userId, // Ensure userId is set
+        snake,
+        apple,
+        direction: "right",
+        directionChanged: false,
+        isGameOver: false,
+        gameLoopTimeout: 50,
+        // Fetch the snake color again
+        snakeColor: "",
+        // Fetch the food color again
+        appleColor: "",
+        score: 0,
+        newHighScore: false,
+        userId: this.props.userId, // Ensure userId is set
       },
       () => {
-          // Use this.props.userId to access the userId from props
-          axios
-              .post(`http://localhost:8080/scoreboard/addScore`, {
-                  userid: this.props.userId, // Use userId from props
-                  score: this.state.score,
-              })
-              .then((response) => {
-                  console.log("Score added successfully");
-                  // Handle response if needed
+        // Fetch snake color again
+        axios
+          .get(`http://localhost:8080/snake/getSnakeColor?userid=${this.props.userId}`)
+          .then((response) => {
+            const snakeColor = response.data;
+            this.setState({ snakeColor });
+          })
+          .catch((error) => {
+            console.error("Error fetching snake color:", error);
+          });
 
-                  // Fetch the highest score from the API
-                  axios
-                      .get(`http://localhost:8080/scoreboard/getHighScore?userId=${this.props.userId}`)
-                      .then((response) => {
-                          const highScore = response.data;
-                          // Update the highScore state
-                          this.setState({ highScore });
-                      })
-                      .catch((error) => {
-                          console.error("Error retrieving high score:", error);
-                          // Handle error if needed
-                      });
+        // Fetch food color again
+        axios
+          .get(`http://localhost:8080/food/getFoodColor?userid=${this.props.userId}`)
+          .then((response) => {
+            const appleColor = response.data;
+            this.setState({ appleColor });
+          })
+          .catch((error) => {
+            console.error("Error fetching food color:", error);
+          });
+
+        // Add the score
+        axios
+          .post(`http://localhost:8080/scoreboard/addScore`, {
+            userid: this.props.userId, // Use userId from props
+            score: this.state.score,
+          })
+          .then((response) => {
+            console.log("Score added successfully");
+            // Handle response if needed
+
+            // Fetch the highest score from the API
+            axios
+              .get(`http://localhost:8080/scoreboard/getHighScore?userId=${this.props.userId}`)
+              .then((response) => {
+                const highScore = response.data;
+                // Update the highScore state
+                this.setState({ highScore });
               })
               .catch((error) => {
-                  console.error("Error adding score:", error);
-                  // Handle error if needed
+                console.error("Error retrieving high score:", error);
+                // Handle error if needed
               });
+          })
+          .catch((error) => {
+            console.error("Error adding score:", error);
+            // Handle error if needed
+          });
       }
-  );
+    );
 }
+
 
   getRandomColor() {
     let hexa = "0123456789ABCDEF";
