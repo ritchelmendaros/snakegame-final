@@ -60,7 +60,7 @@ const CustomizeSnake = () => {
   return (
     <div className="customize-snake-container">
       <div className="header">
-        <img src="logo1.png" alt="Logo" className="logo" />
+        <img src="/logo.png" alt="Logo" className="logo" />
       </div>
       <div className="content-container">
         <div className="color-box">

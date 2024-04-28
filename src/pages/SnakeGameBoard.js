@@ -79,11 +79,6 @@ class SnakeGameBoard extends React.Component {
         console.error("Error retrieving high score:", error);
       });
   }
-
-  componentWillUnmount() {
-    clearTimeout(this.state.timeoutId);
-    window.removeEventListener("keydown", this.handleKeyDown);
-  } 
   
 
   initGame() {
@@ -619,16 +614,18 @@ class SnakeGameBoard extends React.Component {
                 />
               );
             })}
-            <div
-              className="Block"
+            <svg
+              className="apple"
+              width={this.state.blockWidth}
+              height={this.state.blockHeight}
               style={{
-                width: this.state.blockWidth,
-                height: this.state.blockHeight,
+                position: "absolute",
                 left: this.state.apple.Xpos,
                 top: this.state.apple.Ypos,
-                background: this.state.appleColor,
               }}
-            />
+            >
+              <circle cx="50%" cy="50%" r="50%" fill={this.state.appleColor} />
+            </svg>
           <div
             className='Block'
             style={{

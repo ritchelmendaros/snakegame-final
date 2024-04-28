@@ -43,7 +43,6 @@ function Signup() {
       );
   
       console.log("User registered successfully:", registerResponse.data);
-      alert("User registered successfully!");
       navigate("/");
     } catch (error) {
       console.error("Error registering user:", error);

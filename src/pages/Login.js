@@ -36,7 +36,6 @@ function Login() {
       );
 
       console.log("Login successful:", loginResponse.data);
-      alert("Login successful!");
 
       // Fetch user ID after successful login
       const userIdResponse = await axios.get(
