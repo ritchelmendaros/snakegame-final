@@ -1,10 +1,11 @@
 import React from "react";
 import "../css/Dashboard.css"; // Import the CSS file
 import SnakeGameBoard from "./SnakeGameBoard";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const { userId } = useParams(); // Get the user ID from the route parameter
 
   const handleCustomizeClick = () => {
     navigate("/customize");
@@ -16,7 +17,8 @@ const Dashboard = () => {
         <img src="logo.png" alt="Logo" className="logo" />
       </div>
       <div className="game-board-container">
-        <SnakeGameBoard />
+        {/* Pass the userId as a prop to the SnakeGameBoard component */}
+        <SnakeGameBoard userId={userId} />
       </div>
       <div className="button-container">
         <div className="button-row">

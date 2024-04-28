@@ -34,10 +34,20 @@ function Login() {
           },
         }
       );
-  
+
       console.log("Login successful:", loginResponse.data);
       alert("Login successful!");
-      navigate("/");
+
+      // Fetch user ID after successful login
+      const userIdResponse = await axios.get(
+        `http://localhost:8080/users/getUserId?username=${formData.username}`
+      );
+
+      // Extract user ID from the response
+      const userId = userIdResponse.data;
+
+      // Navigate to the '/play' route with the user ID
+      navigate(`/play/${userId}`);
     } catch (error) {
       console.error("Error logging in:", error);
       alert("Login unsuccessful!");

@@ -1,6 +1,8 @@
 import React from "react";
 import "../css/SnakeGameBoard.css";
 import GameOver from "../lib/utils.js";
+import axios from "axios";
+
 
 class SnakeGameBoard extends React.Component {
   constructor(props) {
@@ -24,6 +26,7 @@ class SnakeGameBoard extends React.Component {
       snakeColor: "blue",
       appleColor: "red",
       score: 0,
+      userId: this.props.userId, 
       highScore: Number(localStorage.getItem("snakeHighScore")) || 0,
       newHighScore: false,
     };
@@ -39,7 +42,21 @@ class SnakeGameBoard extends React.Component {
       // Handle the error gracefully, e.g., set isGameOver to true
       this.setState({ isGameOver: true });
     }
+  
+    // Fetch the highest score from the API
+    axios
+      .get(`/scoreboard/getHighScore?userId=${this.state.userId}`)
+      .then((response) => {
+        const highScore = response.data;
+        // Update the highScore state
+        this.setState({ highScore });
+      })
+      .catch((error) => {
+        console.error("Error retrieving high score:", error);
+        // Handle error if needed
+      });
   }
+  
 
   initGame() {
     // Game size initialization
@@ -121,7 +138,7 @@ class SnakeGameBoard extends React.Component {
     let blockWidth = this.state.blockWidth;
     let blockHeight = this.state.blockHeight;
     let apple = this.state.apple;
-  
+    
     // snake reset
     let snake = [];
     let Xpos = width / 2;
@@ -133,7 +150,7 @@ class SnakeGameBoard extends React.Component {
       let snakePart = { Xpos: Xpos, Ypos: Ypos };
       snake.push(snakePart);
     }
-  
+    
     // apple position reset
     apple.Xpos =
       Math.floor(Math.random() * ((width - blockWidth) / blockWidth + 1)) *
@@ -150,7 +167,7 @@ class SnakeGameBoard extends React.Component {
           Math.random() * ((height - blockHeight) / blockHeight + 1)
         ) * blockHeight;
     }
-  
+    
     this.setState({
       snake,
       apple,
@@ -164,7 +181,36 @@ class SnakeGameBoard extends React.Component {
       score: 0,
       newHighScore: false,
     });
+  
+    // Use this.props.userId to access the userId from props
+    axios
+    .post("/scoreboard/addScore", {
+      userId: this.props.userId, // Use userId from props
+      score: this.state.score,
+    })
+    .then((response) => {
+      console.log("Score added successfully");
+      // Handle response if needed
+      
+      // Fetch the highest score from the API
+      axios
+        .get(`/scoreboard/getHighScore?userId=${this.props.userId}`) // Use userId from props
+        .then((response) => {
+          const highScore = response.data;
+          // Update the highScore state
+          this.setState({ highScore });
+        })
+        .catch((error) => {
+          console.error("Error retrieving high score:", error);
+          // Handle error if needed
+        });
+    })
+    .catch((error) => {
+      console.error("Error adding score:", error);
+      // Handle error if needed
+    });
   }
+  
   
 
   getRandomColor() {
