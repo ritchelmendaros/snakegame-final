@@ -20,11 +20,13 @@ class SnakeGameBoard extends React.Component {
       startSnakeSize: 0,
       snake: [],
       apple: {},
+      obstacle: {},
       direction: "right",
       directionChanged: false,
       isGameOver: false,
       snakeColor: "",
       appleColor: "",
+      obstacleColor: "green",
       score: 0,
       userId: this.props.userId,
       highScore: Number(localStorage.getItem("snakeHighScore")) || 0,
@@ -125,7 +127,20 @@ class SnakeGameBoard extends React.Component {
         Math.floor(Math.random() * ((height - blockHeight) / blockHeight + 1)) *
         blockHeight;
     }
-  
+
+    // obstacle position initialization
+    let obstacleXpos =
+      Math.floor(Math.random() * ((width - blockWidth) / blockWidth + 1)) *
+      blockWidth;
+    let obstacleYpos =
+      Math.floor(Math.random() * ((height - blockHeight) / blockHeight + 1)) *
+      blockHeight;
+    while (obstacleYpos === snake[0].Ypos && obstacleYpos === appleYpos) {
+      appleYpos =
+        Math.floor(Math.random() * ((height - blockHeight) / blockHeight + 1)) *
+        blockHeight;
+    }
+
     this.setState({
       width,
       height,
@@ -134,6 +149,7 @@ class SnakeGameBoard extends React.Component {
       startSnakeSize,
       snake,
       apple: { Xpos: appleXpos, Ypos: appleYpos },
+      obstacle: { Xpos: obstacleXpos, Ypos: obstacleYpos },
     });
   }
   
@@ -144,6 +160,7 @@ class SnakeGameBoard extends React.Component {
         this.moveSnake();
         this.tryToEatSnake();
         this.tryToEatApple();
+        this.tryToEatObstacle();
         this.setState({ directionChanged: false });
       }
 
@@ -164,6 +181,7 @@ class SnakeGameBoard extends React.Component {
     let blockWidth = this.state.blockWidth;
     let blockHeight = this.state.blockHeight;
     let apple = this.state.apple;
+    let obstacle = this.state.obstacle;
 
     // snake reset
     let snake = [];
@@ -189,9 +207,24 @@ class SnakeGameBoard extends React.Component {
         Math.floor(Math.random() * ((width - blockWidth) / blockWidth + 1)) *
         blockWidth;
       apple.Ypos =
-        Math.floor(
-          Math.random() * ((height - blockHeight) / blockHeight + 1)
-        ) * blockHeight;
+        Math.floor(Math.random() * ((height - blockHeight) / blockHeight + 1)) *
+        blockHeight;
+    }
+
+    // obstacle position reset
+    obstacle.Xpos =
+      Math.floor(Math.random() * ((width - blockWidth) / blockWidth + 1)) *
+      blockWidth;
+    obstacle.Ypos =
+      Math.floor(Math.random() * ((height - blockHeight) / blockHeight + 1)) *
+      blockHeight;
+    while (this.isObstacleOnSnakeAndOnApple(obstacle.Xpos, obstacle.Ypos)) {
+      obstacle.Xpos =
+        Math.floor(Math.random() * ((width - blockWidth) / blockWidth + 1)) *
+        blockWidth;
+      obstacle.Ypos =
+        Math.floor(Math.random() * ((height - blockHeight) / blockHeight + 1)) *
+        blockHeight;
     }
 
     // Reset the game state and then add the score
@@ -199,6 +232,7 @@ class SnakeGameBoard extends React.Component {
       {
         snake,
         apple,
+        obstacle,
         direction: "right",
         directionChanged: false,
         isGameOver: false,
@@ -207,6 +241,8 @@ class SnakeGameBoard extends React.Component {
         snakeColor: "",
         // Fetch the food color again
         appleColor: "",
+        // Fetch the food color again
+        obstacleColor: "green",
         score: 0,
         newHighScore: false,
         userId: this.props.userId, // Ensure userId is set
@@ -344,6 +380,28 @@ class SnakeGameBoard extends React.Component {
     }
   }
 
+  tryToEatObstacle() {
+    let snake = this.state.snake;
+    let obstacle = this.state.obstacle;
+
+    // if the snake's head is on an obstacle
+    if (snake[0].Xpos === obstacle.Xpos && snake[0].Ypos === obstacle.Ypos) {
+      this.setState({ isGameOver: true });
+
+      axios
+        .post(`http://localhost:8080/scoreboard/addScore`, {
+          userid: this.props.userId,
+          score: this.state.score,
+        })
+        .then((response) => {
+          console.log("Score added successfully");
+        })
+        .catch((error) => {
+          console.error("Error adding score:", error);
+        });
+    }
+  }
+
   tryToEatSnake() {
     let snake = this.state.snake;
   
@@ -372,6 +430,19 @@ class SnakeGameBoard extends React.Component {
     let snake = this.state.snake;
     for (let i = 0; i < snake.length; i++) {
       if (appleXpos === snake[i].Xpos && appleYpos === snake[i].Ypos)
+        return true;
+    }
+    return false;
+  }
+
+  isObstacleOnSnakeAndOnApple(obstacleXpos, obstacleYpos) {
+    let snake = this.state.snake;
+    let apple = this.state.apple;
+    for (let i = 0; i < snake.length; i++) {
+      if (
+        (obstacleXpos === snake[i].Xpos && obstacleYpos === snake[i].Ypos) ||
+        (obstacleXpos === apple.Xpos && obstacleYpos === apple.Ypos)
+      )
         return true;
     }
     return false;
@@ -530,13 +601,13 @@ class SnakeGameBoard extends React.Component {
             style={{
               width: this.state.width,
             height: this.state.height,
-              borderWidth: this.state.width / 50,
-            }}
-          >
-            {this.state.snake.map((snakePart, index) => {
-              return (
-                <div
-                  key={index}
+            borderWidth: this.state.width / 50,
+          }}
+        >
+          {this.state.snake.map((snakePart, index) => {
+            return (
+              <div
+                key={index}
                   className="Block"
                   style={{
                     width: this.state.blockWidth,
@@ -558,6 +629,16 @@ class SnakeGameBoard extends React.Component {
                 background: this.state.appleColor,
               }}
             />
+          <div
+            className='Block'
+            style={{
+              width: this.state.blockWidth,
+              height: this.state.blockHeight,
+              left: this.state.obstacle.Xpos,
+              top: this.state.obstacle.Ypos,
+              background: this.state.obstacleColor,
+            }}
+          />
           </div>
         </div>
       );
