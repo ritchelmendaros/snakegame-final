@@ -11,8 +11,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/play/:userId" element={<Dashboard />} /> {/* Modified route */}
-        <Route path="/customize" element={<CustomizeSnake />} />
+        <Route path="/play/:userId" element={<Dashboard />} /> 
+        <Route path="/customize/:userId" element={<CustomizeSnake />} />
       </Routes>
     </BrowserRouter>
   );

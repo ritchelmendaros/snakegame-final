@@ -256,10 +256,8 @@ class SnakeGameBoard extends React.Component {
       let newHighScore = this.state.newHighScore;
       let gameLoopTimeout = this.state.gameLoopTimeout;
 
-      // increase snake size
       snake.push(newTail);
 
-      // create another apple
       apple.Xpos =
         Math.floor(Math.random() * ((width - blockWidth) / blockWidth + 1)) *
         blockWidth;
@@ -276,7 +274,6 @@ class SnakeGameBoard extends React.Component {
           ) * blockHeight;
       }
 
-      // increment high score if needed
       if (this.state.score === highScore) {
         highScore++;
         localStorage.setItem("snakeHighScore", highScore);
@@ -302,24 +299,20 @@ class SnakeGameBoard extends React.Component {
   
     for (let i = 1; i < snake.length; i++) {
       if (snake[0].Xpos === snake[i].Xpos && snake[0].Ypos === snake[i].Ypos) {
-        // Set game over state
         this.setState({ isGameOver: true });
   
-        // Save the score
         axios.post(`http://localhost:8080/scoreboard/addScore`, {
             userid: this.props.userId,
             score: this.state.score,
         })
         .then((response) => {
             console.log("Score added successfully");
-            // Handle response if needed
         })
         .catch((error) => {
             console.error("Error adding score:", error);
-            // Handle error if needed
         });
   
-        break; // Exit loop once collision detected
+        break; 
       }
     }
   }
@@ -353,14 +346,11 @@ class SnakeGameBoard extends React.Component {
   moveHeadLeft() {
     let blockWidth = this.state.blockWidth;
     let snake = this.state.snake;
-    // Calculate the new X position for the snake's head
     let newXpos = snake[0].Xpos - blockWidth;
-    // Check if the snake's head collides with the left boundary
     if (newXpos < 0) {
       this.setState({ isGameOver: true });
       return;
     }
-    // Update the X position of the snake's head
     snake[0].Xpos = newXpos;
     this.setState({ snake });
   }
@@ -368,14 +358,11 @@ class SnakeGameBoard extends React.Component {
   moveHeadUp() {
     let blockHeight = this.state.blockHeight;
     let snake = this.state.snake;
-    // Calculate the new Y position for the snake's head
     let newYpos = snake[0].Ypos - blockHeight;
-    // Check if the snake's head collides with the top boundary
     if (newYpos < 0) {
       this.setState({ isGameOver: true });
       return;
     }
-    // Update the Y position of the snake's head
     snake[0].Ypos = newYpos;
     this.setState({ snake });
   }
@@ -384,14 +371,11 @@ class SnakeGameBoard extends React.Component {
     let width = this.state.width;
     let blockWidth = this.state.blockWidth;
     let snake = this.state.snake;
-    // Calculate the new X position for the snake's head
     let newXpos = snake[0].Xpos + blockWidth;
-    // Check if the snake's head collides with the right boundary
     if (newXpos >= width) {
       this.setState({ isGameOver: true });
       return;
     }
-    // Update the X position of the snake's head
     snake[0].Xpos = newXpos;
     this.setState({ snake });
   }
@@ -400,20 +384,16 @@ class SnakeGameBoard extends React.Component {
     let height = this.state.height;
     let blockHeight = this.state.blockHeight;
     let snake = this.state.snake;
-    // Calculate the new Y position for the snake's head
     let newYpos = snake[0].Ypos + blockHeight;
-    // Check if the snake's head collides with the bottom boundary
     if (newYpos >= height) {
       this.setState({ isGameOver: true });
       return;
     }
-    // Update the Y position of the snake's head
     snake[0].Ypos = newYpos;
     this.setState({ snake });
   }
 
   handleKeyDown(event) {
-    // if spacebar is pressed to run a new game
     if (this.state.isGameOver && event.keyCode === 32) {
       this.resetGame();
       return;

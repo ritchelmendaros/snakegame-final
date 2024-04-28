@@ -8,7 +8,7 @@ const Dashboard = () => {
   const { userId } = useParams(); // Get the user ID from the route parameter
 
   const handleCustomizeClick = () => {
-    navigate("/customize");
+    navigate(`/customize/${userId}`); // Navigate to the customize route with userId as a parameter
   };
 
   return (
