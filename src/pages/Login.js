@@ -47,6 +47,7 @@ function Login() {
 
       // Navigate to the '/play' route with the user ID
       navigate(`/play/${userId}`);
+      
     } catch (error) {
       console.error("Error logging in:", error);
       alert("Login unsuccessful!");

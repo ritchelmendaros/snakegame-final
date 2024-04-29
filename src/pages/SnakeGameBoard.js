@@ -3,7 +3,6 @@ import "../css/SnakeGameBoard.css";
 import GameOver from "../lib/utils.js";
 import axios from "axios";
 
-
 class SnakeGameBoard extends React.Component {
   constructor(props) {
     super(props);
@@ -43,43 +42,11 @@ class SnakeGameBoard extends React.Component {
       console.error("An error occurred in the game loop:", error);
       this.setState({ isGameOver: true });
     }
-
-    // Fetch snake color
-    axios
-      .get(`http://localhost:8080/snake/getSnakeColor?userid=${this.props.userId}`)
-      .then((response) => {
-        const snakeColor = response.data;
-        this.setState({ snakeColor });
-      })
-      .catch((error) => {
-        console.error("Error fetching snake color:", error);
-      });
-
-    // Fetch food color
-    axios
-      .get(`http://localhost:8080/food/getFoodColor?userid=${this.props.userId}`)
-      .then((response) => {
-        const appleColor = response.data;
-        this.setState({ appleColor });
-      })
-      .catch((error) => {
-        console.error("Error fetching food color:", error);
-      });
-
-    // Fetch the highest score from the API
-    axios
-      .get(
-        `http://localhost:8080/scoreboard/getHighScore?userId=${this.props.userId}`
-      )
-      .then((response) => {
-        const highScore = response.data;
-        this.setState({ highScore });
-      })
-      .catch((error) => {
-        console.error("Error retrieving high score:", error);
-      });
+    // Fetch data
+    this.fetchSnakeColor();
+    this.fetchAppleColor();
+    this.fetchHighScore();
   }
-  
 
   initGame() {
     // Game size initialization
@@ -92,11 +59,11 @@ class SnakeGameBoard extends React.Component {
     let height = (width / 3) * 2;
     let blockWidth = width / 30;
     let blockHeight = height / 20;
-  
+
     // Increase width and height
     width *= 1.2;
     height *= 1.2;
-  
+
     // snake initialization
     let startSnakeSize = this.props.startSnakeSize || 6;
     let snake = [];
@@ -109,7 +76,7 @@ class SnakeGameBoard extends React.Component {
       let snakePart = { Xpos: Xpos, Ypos: Ypos };
       snake.push(snakePart);
     }
-  
+
     // apple position initialization
     let appleXpos =
       Math.floor(Math.random() * ((width - blockWidth) / blockWidth + 1)) *
@@ -131,7 +98,7 @@ class SnakeGameBoard extends React.Component {
       Math.floor(Math.random() * ((height - blockHeight) / blockHeight + 1)) *
       blockHeight;
     while (obstacleYpos === snake[0].Ypos && obstacleYpos === appleYpos) {
-      appleYpos =
+      obstacleYpos =
         Math.floor(Math.random() * ((height - blockHeight) / blockHeight + 1)) *
         blockHeight;
     }
@@ -147,7 +114,6 @@ class SnakeGameBoard extends React.Component {
       obstacle: { Xpos: obstacleXpos, Ypos: obstacleYpos },
     });
   }
-  
 
   gameLoop() {
     let timeoutId = setTimeout(() => {
@@ -231,7 +197,7 @@ class SnakeGameBoard extends React.Component {
         direction: "right",
         directionChanged: false,
         isGameOver: false,
-        gameLoopTimeout: 50,
+        gameLoopTimeout: 80,
         // Fetch the snake color again
         snakeColor: "",
         // Fetch the food color again
@@ -243,59 +209,15 @@ class SnakeGameBoard extends React.Component {
         userId: this.props.userId, // Ensure userId is set
       },
       () => {
-        // Fetch snake color again
-        axios
-          .get(`http://localhost:8080/snake/getSnakeColor?userid=${this.props.userId}`)
-          .then((response) => {
-            const snakeColor = response.data;
-            this.setState({ snakeColor });
-          })
-          .catch((error) => {
-            console.error("Error fetching snake color:", error);
-          });
+        // Fetch data
+        this.fetchSnakeColor();
+        this.fetchAppleColor();
 
-        // Fetch food color again
-        axios
-          .get(`http://localhost:8080/food/getFoodColor?userid=${this.props.userId}`)
-          .then((response) => {
-            const appleColor = response.data;
-            this.setState({ appleColor });
-          })
-          .catch((error) => {
-            console.error("Error fetching food color:", error);
-          });
-
-        // Add the score
-        axios
-          .post(`http://localhost:8080/scoreboard/addScore`, {
-            userid: this.props.userId, // Use userId from props
-            score: this.state.score,
-          })
-          .then((response) => {
-            console.log("Score added successfully");
-            // Handle response if needed
-
-            // Fetch the highest score from the API
-            axios
-              .get(`http://localhost:8080/scoreboard/getHighScore?userId=${this.props.userId}`)
-              .then((response) => {
-                const highScore = response.data;
-                // Update the highScore state
-                this.setState({ highScore });
-              })
-              .catch((error) => {
-                console.error("Error retrieving high score:", error);
-                // Handle error if needed
-              });
-          })
-          .catch((error) => {
-            console.error("Error adding score:", error);
-            // Handle error if needed
-          });
+        // add score
+        this.addScore();
       }
     );
-}
-
+  }
 
   getRandomColor() {
     let hexa = "0123456789ABCDEF";
@@ -382,44 +304,21 @@ class SnakeGameBoard extends React.Component {
     // if the snake's head is on an obstacle
     if (snake[0].Xpos === obstacle.Xpos && snake[0].Ypos === obstacle.Ypos) {
       this.setState({ isGameOver: true });
-
-      axios
-        .post(`http://localhost:8080/scoreboard/addScore`, {
-          userid: this.props.userId,
-          score: this.state.score,
-        })
-        .then((response) => {
-          console.log("Score added successfully");
-        })
-        .catch((error) => {
-          console.error("Error adding score:", error);
-        });
+      this.addScore();
     }
   }
 
   tryToEatSnake() {
     let snake = this.state.snake;
-  
+
+    // if the snake collides on itself
     for (let i = 1; i < snake.length; i++) {
       if (snake[0].Xpos === snake[i].Xpos && snake[0].Ypos === snake[i].Ypos) {
         this.setState({ isGameOver: true });
-  
-        axios.post(`http://localhost:8080/scoreboard/addScore`, {
-            userid: this.props.userId,
-            score: this.state.score,
-        })
-        .then((response) => {
-            console.log("Score added successfully");
-        })
-        .catch((error) => {
-            console.error("Error adding score:", error);
-        });
-  
-        break; 
+        this.addScore();
       }
     }
   }
-  
 
   isAppleOnSnake(appleXpos, appleYpos) {
     let snake = this.state.snake;
@@ -559,42 +458,104 @@ class SnakeGameBoard extends React.Component {
     this.setState({ direction: newDirection });
   }
 
-    render() {
-      // Game over
-      if (this.state.isGameOver) {
-        return (
-          <GameOver
-            width={this.state.width}
-            height={this.state.height}
-            highScore={this.state.highScore}
-            newHighScore={this.state.newHighScore}
-            score={this.state.score}
-          />
-        );
-      }
+  // Function to fetch snake color
+  fetchSnakeColor() {
+    axios
+      .get(
+        `http://localhost:8080/snake/getSnakeColor?userid=${this.props.userId}`
+      )
+      .then((response) => {
+        const snakeColor = response.data;
+        this.setState({ snakeColor });
+      })
+      .catch((error) => {
+        console.error("Error fetching snake color:", error);
+      });
+  }
 
+  // Function to fetch apple color
+  fetchAppleColor() {
+    axios
+      .get(
+        `http://localhost:8080/food/getFoodColor?userid=${this.props.userId}`
+      )
+      .then((response) => {
+        const appleColor = response.data;
+        this.setState({ appleColor });
+      })
+      .catch((error) => {
+        console.error("Error fetching food color:", error);
+      });
+  }
+
+  // Function to fetch high score
+  fetchHighScore() {
+    axios
+      .get(
+        `http://localhost:8080/scoreboard/getHighScore?userId=${this.props.userId}`
+      )
+      .then((response) => {
+        const highScore = response.data;
+        this.setState({ highScore });
+      })
+      .catch((error) => {
+        console.error("Error retrieving high score:", error);
+      });
+  }
+
+  // Function to add score
+  addScore() {
+    axios
+      .post(`http://localhost:8080/scoreboard/addScore`, {
+        userid: this.props.userId,
+        score: this.state.score,
+      })
+      .then((response) => {
+        console.log("Score added successfully");
+        // Handle response if needed
+      })
+      .catch((error) => {
+        console.error("Error adding score:", error);
+        // Handle error if needed
+      });
+  }
+
+  render() {
+    // Game over
+    if (this.state.isGameOver) {
       return (
-        <div>
-          <div className="score-container">
-            <div className="score">
-              <span style={{ color: "white", fontWeight: "bold" }}>Score:</span>{" "}
-              <span style={{ color: "blue", fontWeight: "bold" }}>
-                {this.state.score}
-              </span>
-            </div>
-            <div className="score">
-              <span style={{ color: "white", fontWeight: "bold" }}>
-                Highest Score:
-              </span>{" "}
-              <span style={{ color: "red", fontWeight: "bold" }}>
-                {this.state.highScore}
-              </span>
-            </div>
+        <GameOver
+          width={this.state.width}
+          height={this.state.height}
+          highScore={this.state.highScore}
+          newHighScore={this.state.newHighScore}
+          score={this.state.score}
+        />
+      );
+    }
+
+    return (
+      <div>
+        <div className="score-container">
+          <div className="score">
+            <span style={{ color: "white", fontWeight: "bold" }}>Score:</span>{" "}
+            <span style={{ color: "blue", fontWeight: "bold" }}>
+              {this.state.score}
+            </span>
           </div>
-          <div
-            id="GameBoard"
-            style={{
-              width: this.state.width,
+          <div className="score">
+            <span style={{ color: "white", fontWeight: "bold" }}>
+              Highest Score:
+            </span>{" "}
+            <span style={{ color: "red", fontWeight: "bold" }}>
+              {this.state.highScore}
+            </span>
+          </div>
+        </div>
+        <div
+          id="GameBoard"
+          style={{
+            width: this.state.width,
             height: this.state.height,
             borderWidth: this.state.width / 50,
           }}
@@ -603,31 +564,31 @@ class SnakeGameBoard extends React.Component {
             return (
               <div
                 key={index}
-                  className="Block"
-                  style={{
-                    width: this.state.blockWidth,
-                    height: this.state.blockHeight,
-                    left: snakePart.Xpos,
-                    top: snakePart.Ypos,
-                    background: this.state.snakeColor,
-                  }}
-                />
-              );
-            })}
-            <svg
-              className="apple"
-              width={this.state.blockWidth}
-              height={this.state.blockHeight}
-              style={{
-                position: "absolute",
-                left: this.state.apple.Xpos,
-                top: this.state.apple.Ypos,
-              }}
-            >
-              <circle cx="50%" cy="50%" r="50%" fill={this.state.appleColor} />
-            </svg>
+                className="Block"
+                style={{
+                  width: this.state.blockWidth,
+                  height: this.state.blockHeight,
+                  left: snakePart.Xpos,
+                  top: snakePart.Ypos,
+                  background: this.state.snakeColor,
+                }}
+              />
+            );
+          })}
+          <svg
+            className="apple"
+            width={this.state.blockWidth}
+            height={this.state.blockHeight}
+            style={{
+              position: "absolute",
+              left: this.state.apple.Xpos,
+              top: this.state.apple.Ypos,
+            }}
+          >
+            <circle cx="50%" cy="50%" r="50%" fill={this.state.appleColor} />
+          </svg>
           <div
-            className='Block'
+            className="Block"
             style={{
               width: this.state.blockWidth,
               height: this.state.blockHeight,
@@ -636,10 +597,10 @@ class SnakeGameBoard extends React.Component {
               background: this.state.obstacleColor,
             }}
           />
-          </div>
         </div>
-      );
-    }
+      </div>
+    );
   }
+}
 
 export default SnakeGameBoard;
