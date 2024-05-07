@@ -188,7 +188,7 @@ class SnakeGameBoard extends React.Component {
         blockHeight;
     }
 
-    // Reset the game state and then add the score
+    // Reset the game state and then update the score
     this.setState(
       {
         snake,
@@ -212,9 +212,9 @@ class SnakeGameBoard extends React.Component {
         // Fetch data
         this.fetchSnakeColor();
         this.fetchAppleColor();
-
-        // add score
-        this.addScore();
+        
+        // update score
+        this.updateScore();
       }
     );
   }
@@ -304,7 +304,7 @@ class SnakeGameBoard extends React.Component {
     // if the snake's head is on an obstacle
     if (snake[0].Xpos === obstacle.Xpos && snake[0].Ypos === obstacle.Ypos) {
       this.setState({ isGameOver: true });
-      this.addScore();
+      this.updateScore();
     }
   }
 
@@ -315,7 +315,7 @@ class SnakeGameBoard extends React.Component {
     for (let i = 1; i < snake.length; i++) {
       if (snake[0].Xpos === snake[i].Xpos && snake[0].Ypos === snake[i].Ypos) {
         this.setState({ isGameOver: true });
-        this.addScore();
+        this.updateScore();
       }
     }
   }
@@ -503,19 +503,19 @@ class SnakeGameBoard extends React.Component {
       });
   }
 
-  // Function to add score
-  addScore() {
+  // Function to update score
+  updateScore() {
     axios
-      .post(`http://localhost:8080/scoreboard/addScore`, {
+      .put(`http://localhost:8080/scoreboard/updateScore`, {
         userid: this.props.userId,
         score: this.state.score,
       })
       .then((response) => {
-        console.log("Score added successfully");
+        console.log("Score updated successfully");
         // Handle response if needed
       })
       .catch((error) => {
-        console.error("Error adding score:", error);
+        console.error("Error updating score:", error);
         // Handle error if needed
       });
   }
