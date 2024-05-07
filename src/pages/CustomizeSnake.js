@@ -110,6 +110,7 @@ const CustomizeSnake = () => {
                 value={foodColor}
                 onChange={(e) => handleFoodColorChange(e.target.value)}
               >
+                <option value="None">Choose a fruit</option>
                 <option value="apple">Apple</option>
                 <option value="watermelon">Watermelon</option>
                 <option value="pineapple">Pineapple</option>
