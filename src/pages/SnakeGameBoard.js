@@ -3,6 +3,8 @@ import "../css/SnakeGameBoard.css";
 import GameOver from "../lib/utils.js";
 import axios from "axios";
 
+
+
 class SnakeGameBoard extends React.Component {
   constructor(props) {
     super(props);
@@ -485,6 +487,7 @@ class SnakeGameBoard extends React.Component {
       .then((response) => {
         const appleColor = response.data;
         this.setState({ appleColor });
+        console.log(appleColor)
       })
       .catch((error) => {
         console.error("Error fetching food color:", error);
@@ -614,18 +617,18 @@ class SnakeGameBoard extends React.Component {
               />
             );
           })}
-          <svg
+          <img
             className="apple"
-            width={this.state.blockWidth}
-            height={this.state.blockHeight}
+            src={this.state.appleColor}
+            alt="Apple"
             style={{
               position: "absolute",
+              width: this.state.blockWidth + 2,
+              height: this.state.blockHeight + 2,
               left: this.state.apple.Xpos,
               top: this.state.apple.Ypos,
             }}
-          >
-            <circle cx="50%" cy="50%" r="50%" fill={this.state.appleColor} />
-          </svg>
+          />
           <div
             className="Block"
             style={{

@@ -59,10 +59,10 @@ function Signup() {
     <div className="signup-container">
       <div className="image-container">
         <div className="image">
-          <img src='logo.png' alt="Snake" className="snake-image" />
+          <img src='images\logo.png' alt="Snake" className="snake-image" />
         </div>
         <div className="logo">
-          <img src='logo1.png' alt="Snake" className="snake-word" />
+          <img src='images\logo1.png' alt="Snake" className="snake-word" />
         </div>
       </div>
       <div className="signup-form">

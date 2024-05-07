@@ -15,7 +15,7 @@ const Dashboard = () => {
   return (
     <div className="dashboard-container">
       <div className="header">
-        <img src="/logo.png" alt="Logo" className="logo" />
+        <img src="..\images\logo.png" alt="Logo" className="logo" />
       </div>
       <div className="game-board-container">
         <SnakeGameBoard userId={userId} />
