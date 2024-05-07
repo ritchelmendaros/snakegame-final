@@ -26,6 +26,7 @@ class SnakeGameBoard extends React.Component {
       snakeColor: "",
       appleColor: "",
       obstacleColor: "green",
+      leaderboard: [],
       score: 0,
       userId: this.props.userId,
       highScore: Number(localStorage.getItem("snakeHighScore")) || 0,
@@ -46,6 +47,7 @@ class SnakeGameBoard extends React.Component {
     this.fetchSnakeColor();
     this.fetchAppleColor();
     this.fetchHighScore();
+    this.fetchLeaderboard();
   }
 
   initGame() {
@@ -517,6 +519,19 @@ class SnakeGameBoard extends React.Component {
       .catch((error) => {
         console.error("Error updating score:", error);
         // Handle error if needed
+      });
+  }
+
+  // fetch the score leaderboard
+  fetchLeaderboard() {
+    axios
+      .get("http://localhost:8080/scoreboard/leaderboard")
+      .then((response) => {
+        const leaderboard = response.data;
+        this.setState({ leaderboard });
+      })
+      .catch((error) => {
+        console.error("Error fetching leaderboard:", error);
       });
   }
 
