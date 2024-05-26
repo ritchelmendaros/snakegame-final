@@ -42,9 +42,8 @@ function Login() {
         `http://localhost:8080/users/getUserId?username=${formData.username}`
       );
 
-      sessionStorage.setItem('userId', userIdResponse.data);
-      
       const userId = userIdResponse.data;
+      sessionStorage.setItem('userId', userId);
 
       navigate(`/play/${userId}`);
       
