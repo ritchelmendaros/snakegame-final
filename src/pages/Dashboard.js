@@ -12,10 +12,21 @@ const Dashboard = () => {
     navigate(`/customize/${userId}`); 
   };
 
+  const handleLogoutClick = () => {
+    navigate("/");
+  };
+
+
   return (
     <div className="dashboard-container">
       <div className="header">
         <img src="..\images\logo.png" alt="Logo" className="logo" />
+        <img
+          src="../images/logout.png"
+          alt="Logout"
+          className="logo1"
+          onClick={handleLogoutClick}
+        />
       </div>
       <div className="game-board-container">
         <SnakeGameBoard userId={userId} />

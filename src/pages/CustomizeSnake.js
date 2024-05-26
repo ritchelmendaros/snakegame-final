@@ -87,10 +87,20 @@ const CustomizeSnake = () => {
       });
   };
 
+  const handleLogoutClick = () => {
+    navigate("/");
+  };
+
   return (
     <div className="customize-snake-container">
       <div className="header">
         <img src="..\images\logo.png" alt="Logo" className="logo" />
+        <img
+          src="../images/logout.png"
+          alt="Logout"
+          className="logo1"
+          onClick={handleLogoutClick}
+        />
       </div>
       <div className="content-container">
         <div className="color-box">
