@@ -3,6 +3,7 @@
   background-color: gainsboro;
   overflow: hidden;
   margin-left: 650px;
+  margin-top: -5px;
 }
 
 .Block {
@@ -54,6 +55,9 @@
   font-size: 24px;
   letter-spacing: 2px;
 }
+h2 {
+  font-family: 'Garet', sans-serif; 
+}
 
 #GameOverText {
   color: red;
@@ -81,12 +85,13 @@
 }
 
 .game-container {
-  width: 65%; /* Adjust as needed */
+  width: 65%;
 }
 
 table {
   border-collapse: collapse;
   width: 100%;
+  font-family: 'Garet', sans-serif; 
 }
 
 th, td {
@@ -118,7 +123,7 @@ tr:hover {
 .leaderboard-container {
   position: absolute;
   left: 150px; 
-  top: 60px; 
+  top: 62px; 
   width: 400px;
   height: 100%;
   color: white;

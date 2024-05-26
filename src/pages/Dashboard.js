@@ -17,11 +17,11 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    const isLoggedIn = sessionStorage.getItem('userId');
-    if (!isLoggedIn) {
+    const storedUserId = sessionStorage.getItem('userId');
+    if (!storedUserId || storedUserId !== userId) {
       navigate("/");
     }
-  }, [navigate]);
+  }, [navigate, userId]);
 
 
   return (

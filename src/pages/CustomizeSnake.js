@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import "../css/CustomizeSnake.css";
-import { useParams } from "react-router-dom";
 
 const CustomizeSnake = () => {
   const [snakeColor, setSnakeColor] = useState("#0000FF");
@@ -11,6 +10,11 @@ const CustomizeSnake = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const storedUserId = sessionStorage.getItem('userId');
+    if (!storedUserId || storedUserId !== userId) {
+      navigate("/");
+    }
+
     // Fetch snake color
     axios
       .get(`http://localhost:8080/snake/getSnakeColor?userid=${userId}`)
@@ -30,7 +34,7 @@ const CustomizeSnake = () => {
       .catch((error) => {
         console.error("Error fetching food color:", error);
       });
-  }, [userId]);
+  }, [navigate, userId]);
 
   const handleSnakeColorChange = (color) => {
     setSnakeColor(color);
@@ -40,22 +44,22 @@ const CustomizeSnake = () => {
     let imagePath;
     switch (fruit) {
       case "apple":
-        imagePath = "..\\images\\apple.png";
+        imagePath = "../images/apple.png";
         break;
       case "watermelon":
-        imagePath = "..\\images\\watermelon.png";
+        imagePath = "../images/watermelon.png";
         break;
       case "pineapple":
-        imagePath = "..\\images\\pineapple.png";
+        imagePath = "../images/pineapple.png";
         break;
       case "orange":
-        imagePath = "..\\images\\orange.png";
+        imagePath = "../images/orange.png";
         break;
       case "mango":
-        imagePath = "..\\images\\mango.png";
+        imagePath = "../images/mango.png";
         break;
       default:
-        imagePath = "..\\images\\default.png";
+        imagePath = "../images/default.png";
     }
     setFoodColor(imagePath);
   };
@@ -88,20 +92,14 @@ const CustomizeSnake = () => {
   };
 
   const handleLogoutClick = () => {
+    sessionStorage.removeItem('userId');
     navigate("/");
   };
-
-  useEffect(() => {
-    const isLoggedIn = sessionStorage.getItem('userId');
-    if (!isLoggedIn) {
-      navigate("/");
-    }
-  }, [navigate]);
 
   return (
     <div className="customize-snake-container">
       <div className="header">
-        <img src="..\images\logo.png" alt="Logo" className="logo" />
+        <img src="../images/logo.png" alt="Logo" className="logo" />
         <img
           src="../images/logout.png"
           alt="Logout"
@@ -122,21 +120,21 @@ const CustomizeSnake = () => {
         </div>
         <div className="color-box">
           <h2>Choose Food</h2>
-            <div className="color-palette select-wrapper">
-              <select
-                value={foodColor}
-                onChange={(e) => handleFoodColorChange(e.target.value)}
-              >
-                <option value="None">Choose a fruit</option>
-                <option value="apple">Apple</option>
-                <option value="watermelon">Watermelon</option>
-                <option value="pineapple">Pineapple</option>
-                <option value="orange">Orange</option>
-                <option value="mango">Mango</option>
-              </select>
-            </div>
+          <div className="color-palette select-wrapper">
+            <select
+              value={foodColor}
+              onChange={(e) => handleFoodColorChange(e.target.value)}
+            >
+              <option value="None">Choose a fruit</option>
+              <option value="apple">Apple</option>
+              <option value="watermelon">Watermelon</option>
+              <option value="pineapple">Pineapple</option>
+              <option value="orange">Orange</option>
+              <option value="mango">Mango</option>
+            </select>
           </div>
         </div>
+      </div>
       <div className="button-container">
         <div className="button-row">
           <Link className="change-button" onClick={handleDoneButtonClick}>

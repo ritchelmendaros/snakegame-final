@@ -303,25 +303,13 @@ class SnakeGameBoard extends React.Component {
   tryToEatObstacle() {
     let snake = this.state.snake;
     let obstacle = this.state.obstacle;
-    let blockWidth = this.state.blockWidth;
-    let blockHeight = this.state.blockHeight;
-  
-    // Adjusting the obstacle size
-    let obstacleWidth = this.state.blockWidth + 30;
-    let obstacleHeight = this.state.blockHeight + 30;
-  
-    // Check for collision considering the obstacle size
-    if (
-      snake[0].Xpos >= obstacle.Xpos &&
-      snake[0].Xpos < obstacle.Xpos + obstacleWidth &&
-      snake[0].Ypos >= obstacle.Ypos &&
-      snake[0].Ypos < obstacle.Ypos + obstacleHeight
-    ) {
+
+    // if the snake's head is on an obstacle
+    if (snake[0].Xpos === obstacle.Xpos && snake[0].Ypos === obstacle.Ypos) {
       this.setState({ isGameOver: true });
       this.updateScore();
     }
   }
-
 
   tryToEatSnake() {
     let snake = this.state.snake;
@@ -345,24 +333,17 @@ class SnakeGameBoard extends React.Component {
   }
 
   isObstacleOnSnakeAndOnApple(obstacleXpos, obstacleYpos) {
-  let snake = this.state.snake;
-  let apple = this.state.apple;
-
-  for (let i = 0; i < snake.length; i++) {
-    if (
-      (obstacleXpos >= snake[i].Xpos &&
-        obstacleXpos < snake[i].Xpos + this.state.blockWidth &&
-        obstacleYpos >= snake[i].Ypos &&
-        obstacleYpos < snake[i].Ypos + this.state.blockHeight) ||
-      (obstacleXpos >= apple.Xpos &&
-        obstacleXpos < apple.Xpos + this.state.blockWidth &&
-        obstacleYpos >= apple.Ypos &&
-        obstacleYpos < apple.Ypos + this.state.blockHeight)
-    )
-      return true;
+    let snake = this.state.snake;
+    let apple = this.state.apple;
+    for (let i = 0; i < snake.length; i++) {
+      if (
+        (obstacleXpos === snake[i].Xpos && obstacleYpos === snake[i].Ypos) ||
+        (obstacleXpos === apple.Xpos && obstacleYpos === apple.Ypos)
+      )
+        return true;
+    }
+    return false;
   }
-  return false;
-}
 
   moveHead() {
     switch (this.state.direction) {
@@ -652,8 +633,8 @@ class SnakeGameBoard extends React.Component {
             alt="Obstacle"
             style={{
               position: "absolute",
-              width: this.state.blockWidth + 30,
-              height: this.state.blockHeight + 30,
+              width: this.state.blockWidth,
+              height: this.state.blockHeight,
               left: this.state.obstacle.Xpos,
               top: this.state.obstacle.Ypos,
             }}
