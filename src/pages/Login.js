@@ -42,10 +42,10 @@ function Login() {
         `http://localhost:8080/users/getUserId?username=${formData.username}`
       );
 
-      // Extract user ID from the response
+      sessionStorage.setItem('userId', userIdResponse.data);
+      
       const userId = userIdResponse.data;
 
-      // Navigate to the '/play' route with the user ID
       navigate(`/play/${userId}`);
       
     } catch (error) {

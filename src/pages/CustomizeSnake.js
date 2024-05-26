@@ -91,6 +91,13 @@ const CustomizeSnake = () => {
     navigate("/");
   };
 
+  useEffect(() => {
+    const isLoggedIn = sessionStorage.getItem('userId');
+    if (!isLoggedIn) {
+      navigate("/");
+    }
+  }, [navigate]);
+
   return (
     <div className="customize-snake-container">
       <div className="header">

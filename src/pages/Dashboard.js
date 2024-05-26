@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../css/Dashboard.css"; 
 import SnakeGameBoard from "./SnakeGameBoard";
 import { useNavigate, useParams } from "react-router-dom";
@@ -15,6 +15,13 @@ const Dashboard = () => {
   const handleLogoutClick = () => {
     navigate("/");
   };
+
+  useEffect(() => {
+    const isLoggedIn = sessionStorage.getItem('userId');
+    if (!isLoggedIn) {
+      navigate("/");
+    }
+  }, [navigate]);
 
 
   return (
