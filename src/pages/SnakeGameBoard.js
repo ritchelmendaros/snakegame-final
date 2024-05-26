@@ -63,7 +63,7 @@ class SnakeGameBoard extends React.Component {
     let blockWidth = width / 30;
     let blockHeight = height / 20;
 
-    // Increase width and height
+    // snake width and height
     width *= 1.2;
     height *= 1.2;
 
@@ -94,7 +94,7 @@ class SnakeGameBoard extends React.Component {
     }
 
     // obstacle position initialization
-    const numObstacles = 5; // Example: 5 obstacles
+    const numObstacles = 5;
     let obstacles = [];
     for (let i = 0; i < numObstacles; i++) {
       let obstacleXpos =
@@ -235,15 +235,12 @@ class SnakeGameBoard extends React.Component {
         directionChanged: false,
         isGameOver: false,
         gameLoopTimeout: 80,
-        // Fetch the snake color again
         snakeColor: "",
-        // Fetch the food color again
         appleColor: "",
-        // Fetch the food color again
         obstacleColor: "green",
         score: 0,
         newHighScore: false,
-        userId: this.props.userId, // Ensure userId is set
+        userId: this.props.userId, 
       },
       () => {
         // Fetch data
@@ -334,7 +331,8 @@ class SnakeGameBoard extends React.Component {
       });
     }
   }
-  //modified by multiple obs
+
+ 
   tryToEatObstacle() {
     let snake = this.state.snake;
     let obstacles = this.state.obstacles;
@@ -369,7 +367,7 @@ class SnakeGameBoard extends React.Component {
     }
     return false;
   }
-  //modified by multiple obstacle
+ 
   isObstacleOnSnakeAndOnApple(obstacleXpos, obstacleYpos) {
     let snake = this.state.snake;
     let apple = this.state.apple;
@@ -382,7 +380,7 @@ class SnakeGameBoard extends React.Component {
     }
     return false;
   }
-  //HEAD MOVEMENTS
+
   moveHead() {
     switch (this.state.direction) {
       case "left":
@@ -514,7 +512,7 @@ class SnakeGameBoard extends React.Component {
       });
   }
 
-  // Function to fetch apple color
+  // Function to fetch food
   fetchAppleColor() {
     axios
       .get(
@@ -556,11 +554,9 @@ class SnakeGameBoard extends React.Component {
       })
       .then((response) => {
         console.log("Score updated successfully");
-        // Handle response if needed
       })
       .catch((error) => {
         console.error("Error updating score:", error);
-        // Handle error if needed
       });
   }
 
@@ -576,7 +572,7 @@ class SnakeGameBoard extends React.Component {
         console.error("Error fetching leaderboard:", error);
       });
   }
-  
+
   render() {
     // Game over
     if (this.state.isGameOver) {
