@@ -51,7 +51,7 @@ function GameOver(props) {
       >
         <div id="GameOver" style={{ fontSize: props.width / 15 }}>
           <div id="GameOverText">GAME OVER</div>
-          <div id="PressSpaceText">Press Space to restart</div>
+          <div id="PressSpaceText" style={{ fontFamily: 'Garet, sans-serif' }}>Press Space to restart</div>
         </div>
       </div>
     </>
